@@ -18,6 +18,7 @@ See: https://cloud.ibm.com/devops/getting-started
 
 ## TODOs
 
+* Add remaining Kubernetes resources to deployment script in Lab1,
 * Lab2, Create a Toolchain - Deploy a Kubernetes App with Helm,
 * Lab4, Adding Tools: Vulnerability Advisor
 
