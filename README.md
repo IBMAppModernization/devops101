@@ -1,8 +1,10 @@
 # DevOps 101
 
-The objective of the `DevOps 101` is to explain how you can create a CICD Pipeline on IBM Cloud in order to automate full life cycle management of your application.
+The objective of the `DevOps 101` is to explain how you can create a CI/CD Pipeline on IBM Cloud in order to automate full life cycle management of your application.
 
-`IBM Cloud Continuous Delivery` service includes toolchains that support development, deployment and operations tasks to manage your CICD.
+`IBM Cloud Continuous Delivery` service includes toolchains that support development, deployment and operations tasks to manage your CI/CD.
+
+The accronym CI/CD stands for Continuous Integration and Continuous Delivery. Continuous Integration (CI) stands for the practice of developers merging their work into a shared main branch, validating the merger by creating a automatic build and automatic testing against the build. Continuous Delivery (CD) adds an automated release process to deploy an application.
 
 See: https://cloud.ibm.com/devops/getting-started
 

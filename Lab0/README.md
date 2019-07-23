@@ -5,13 +5,16 @@
 1. An instance of IBM Cloud Kubernetes Service (IKS),
 2. An instance of IBM Cloud Container Registry, 
 3. A fork of the IBM Guestbook application,
+
     * Go to https://github.com/IBM/guestbook,
     * Create a fork to your own Github repo,
     * [Optional] Clone the code to your localhost,
+
     ```console
-    $ git clone git@github.com:<username>/guestbook.git
+    $ git clone https://github.com:<username>/guestbook.git
     Cloning into 'guestbook'...
     ```
+    
 4. Install the [IBM Cloud Developer Tools CLI](https://cloud.ibm.com/docs/cli?topic=cloud-cli-getting-started) on your localhost,
 
     ```console
@@ -35,14 +38,15 @@
 ## Access the IBM Cloud and IKS from your Client
 
 1. Login to your IBM Cloud account,
-    ```
-    $ ibmcloud login [--sso]
+
+    ```console
+    $ ibmcloud login
     API endpoint: https://cloud.ibm.com
     Region: us-south
 
-    Get One Time Code from https://identity-1.us-south.iam.cloud.ibm.com/identity/passcode to proceed.
-    Open the URL in the default browser? [Y/n] > 
-    One Time Code > 
+    Email> userone@email.com
+
+    Password> 
     Authenticating...
     OK
 

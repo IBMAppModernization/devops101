@@ -1,3 +1,3 @@
-# Toolchain 2 - Develop a Kubernetes Ap with Helm
+# Toolchain 2 - Develop a Kubernetes App with Helm
 
 TBD
