@@ -1,23 +1,23 @@
 # DevOps 101
 
-What is Continuous Integration?
-What is Continuous Delivery?
+The objective of the `DevOps 101` is to explain how you can create a CICD Pipeline on IBM Cloud in order to automate full life cycle management of your application.
 
-The objective of this 101 is to explain how to create a CI/CD Pipeline on IBM Cloud in order to automate the Build, Test, Deployment, and Management of your application.
+`IBM Cloud Continuous Delivery` service includes toolchains that support development, deployment and operations tasks to manage your CICD.
 
 See: https://cloud.ibm.com/devops/getting-started
 
-## Creating a CICD Pipeline
+## Toolchain Pipelines
 
-Steps in creating a CICD Pipeline:
+![extended pipeline](images/ibmcloud-devops-extended-toolchain.png)
 
-1. Docker, see docker101
-2. Kubernetes, see kube101
-3. Container Registry
-    * Create
-    * Access
-    * Push
-    * Pull
-4. Setup Continuous Delivery to build and push Docker image, see [Lab1](Lab1/README.md)
-5. Setup Continuous Delivery to deploy to IBM Cloud, see [Lab2](Lab2/README.md)
+## Labs
+
+1. Lab0, Setup and Pre-requisites, see [Lab0](Lab0/README.md),
+2. Lab1, Create a Toolchain - Deploy a Kubernetes App, see [Lab1](Lab1/README.md),
+3. Lab2, Create a Toolchain - Deploy a Kubernetes App with Helm - TBD,
+4. Lab3, Create a Custom Toolchain, see [Lab3](Lab3/README.md),
+
+## TODOs
+
+* Lab4, Adding Tools: Vulnerability Advisor
 
