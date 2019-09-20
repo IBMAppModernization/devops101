@@ -71,16 +71,20 @@
     * If you don't have a custom resource group, then use the `default`,
 
     ```console
-    $ ibmcloud target -g default
-    Targeted resource group default
+    $ ibmcloud target --cf
+	Targeted Cloud Foundry (https://api.ng.bluemix.net)
 
-    API endpoint:      https://cloud.ibm.com   
+	Targeted org 1234567
+
+	Targeted space dev
+					
+	API endpoint:      https://cloud.ibm.com   
     Region:            us-south   
     User:              userone@email.com   
-    Account:           USER ONE's Account (1ab2c3de456789fg01h23i4j5k6l78mn) <-> 1234567   
-    Resource group:    default   
-    CF API endpoint:      
-    Org:                  
-    Space:         
+    Account:           USER ONE's Account (1ab2c3de456789fg01h23i4j5k6l78mn) <-> 1234567  
+	Resource group:    Default   
+	CF API endpoint:   https://api.ng.bluemix.net (API version: 2.128.0)   
+	Org:               1234567   
+	Space:             dev           
     ```
 

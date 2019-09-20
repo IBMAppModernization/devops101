@@ -8,14 +8,12 @@
 2. Configure the Toolchain, for:
 
     * Toolchain Name: `toolchain-kube-guestbook`,
-    * Region: 
-    * Resource Group: `default`
+    * Region: <default>
+    * Resource Group: `Default`
     * Configure your Source Provider: `Github`,
         * Github Server: `https://github.com`,
         * Repository Type: `Existing`
-        * Source repository URL: `https://github.com/<username>/guestbook`,
-        * [Owner: ]
-        * [Repository Name: ]
+        * Source repository URL: `https://github.com/<username>/guestbook`, you should be able to select the drop down and scroll to find your fork of the `guestbook` repo,
         * Check `Enable GitHub Issues`,
         * Check `Track deployment of code changes`,
     * Click `Create` button,
@@ -30,14 +28,17 @@
                 * Click the `Create` button to generate a new one,
                 * Or go to `Manage` > `Access (IAM)` > `IBM Cloud API Keys` to create a new IBM Cloud API Key,
                 * copy-paste the API Key,
-                * This should trigger the validation of the API Key, and if validated, should autoload the values for `Container registry region`, `Container registry namespace`, `Cluster region`, `Resource Group`, `Cluster name`, and `Cluster namespace`,
+                * This should trigger the validation of the API Key, and if validated, should autoload the values for `Container registry region`, `Container registry namespace` or if no namespace exists enter `guestbook-ns` as the namespace, `Cluster region`, `Resource Group`, `Cluster name` or if more than one select the correct cluster, and `guestbook-ns` for `Cluster namespace`,
+                * Note that the `Cluster namespace` must be unique for us.icr.io
     * Click the `Create` button,
+
     * The Toolchain is being configured,
     * When the Toolchain has successfully been configured, you will see the Tools in the Toolchain: THINK, CODE, DELIVER, and Eclipse Orion Web IDE,
+    * Click the top right drop down of the `kube-toolchain-123456...` and select `Rename`,
+    * Rename the toolchain name to `toolchain-kube-guestbook`,
     * In the DELIVER tool window, click the top right dropdown and select `Configure`,
     * Rename the `Pipeline name` to a meaningful name, e.g. `guestbook-delivery-pipeline`,
     * Click `Save Integration`,
-    * In the left menu, click the `Connections` link, you should see your Kubernetes cluster linked here,
     * Go back to the `Overview` page,
 
 
@@ -45,69 +46,80 @@
     * The `THINK` window should link to your Issues manager,
     * The `CODE` window should link to your source code repository,
     * The `Eclipse Orion Web IDE` should link to an online Eclipse code editor,
-    * Review the `DELIVER` window,
+    * Click the `DELIVER` window to review the `Delivery Pipeline`,
         * The `Delivery Pipeline` page will load,
-        * Review the `BUILD` stage,
-            * The initial `BUILD` stage failed,
+        * Click the `BUILD` stage,
+            * The initial `BUILD` stage passes,
+            * In the `JOBS` section, click the `View logs and history` link,
+            * The `BUILD` stage fetched the source code and tried running the unit tests. The test runner script was not found but the tests did not result in failed tests. (Note: this should fail however)
+            * Return to the `guestbook-delivery-pipeline`,
+        * The `CONTAINERIZE` stage failed,
             * In the `JOBS` section, click the `View logs and history` link,
             * Review the build logs, and note that the `Dockerfile` was not found,
             * Also in the build logs, note the environment variables that were configured
 
                 ```
-                REGISTRY_URL=us.icr.io
-                REGISTRY_NAMESPACE=<username>-ns
-                IMAGE_NAME=guestbook
-                ARCHIVE_DIR=.
                 DOCKER_ROOT=.
-                DOCKER_FILE=Dockerfile
-                build.properties : not found
+				DOCKER_FILE=Dockerfile
+				build.properties:
+				GIT_URL=https://github.com/<username>/guestbook.git
+				GIT_BRANCH=master
+				GIT_COMMIT=5246a420041424130f32d292cca7fc7a99aa0b93
+				SOURCE_BUILD_NUMBER=1
                 ```
 
             * The Dockerfile for the guestbook application is located in the `v1/guestbook` and `v2/guestbook` subdirectories, so the reference needs to be set to include the relative path,
-            * Go back to the `Delivery Pipeline` page, the `BUILD` window, click the `Configure Stage` icon,
-            * In the `Jobs` tab, review the `Build script` code. Note that this is essentially a Bash script that enforces pre-requisites to run the builder of type `Container Registry` set in the `Builder type` property, 
-            * Go to the `Environment properties` tab of the `BUILD` stage configuration,
+            * Go back to the `Delivery Pipeline` page, in the `CONTAINERIZE` window, from the settings drop down, click the `Configure Stage` icon,
+            * In the `Jobs` tab, note there are 4 jobs belonging to the stage, each job corresponds to a step in the `Build logs`,
+            * Review the `Check dockerfile` job. Note that this is essentially a Bash script that runs the script located at `https://raw.githubusercontent.com/open-toolchain/commons/master/scripts/check_dockerfile.sh`,
+            * If you review the bash script, it sets the `DOCKER_ROOT` environment variable to the current directory if not set, and this is the reason that our Dockerfile is not found, 
+            * Go to the `Environment properties` tab of the `CONTAINERIZE` stage, 
             * Change the `DOCKER_ROOT` property to `./v2/guestbook`,
-            * Manually trigger the `BUILD` stage again by clicking the `Play` icon,
-            * The `BUILD` stage passes now,
+            * Click `SAVE`
+
+            * Manually trigger the `CONTAINERIZE` stage again by clicking the `Play` icon,
+            * The `Check dockerfile` job in the `CONTAINERIZE` stage should pass now,
+            * If any of the next jobs fails, review the `View logs and history` link, and select the failed job, to debug,
             * Go to https://cloud.ibm.com/kubernetes/clusters, go to `Registry` and `Images`,
-            * You should see now that your `guestbook` image has been added to your registry,
+            * You should see now that your `guestbook` image added to your registry under the `guestbook-ns` namespace,
         
         * Review the `VALIDATE` stage,
-            * You see that the stage passed but that the `Vulnerability Advisor` job failed,
-            * In the `JOBS` section, click the `View logs and history` link,
-            * Review the logs,
+            * You see that the stage failed for the `Deploy to Kubernetes` job,
+            * Review the `View logs and history` link,
+            * The `VALIDATE` failed because `Kubernetes deployment file 'deployment.yml' not found`,
+            * Review the environment variables that are written in the log,
 
-                ```console
-                Checking vulnerabilities in image: us.icr.io/remkohdev-ns/guestbook:3-master-5246a420-20190723023204
-                parse error: Invalid numeric literal at line 2, column 0
-                FAILED
-                ...
-                parse error: Invalid numeric literal at line 2, column 0
+				```text
+				IMAGE_NAME=guestbook
+				IMAGE_TAG=3-master-5246a420-20190920035314
+				REGISTRY_URL=us.icr.io
+				REGISTRY_NAMESPACE=guestbook-ns
+				DEPLOYMENT_FILE=deployment.yml
+				USE_ISTIO_GATEWAY=
+				KUBERNETES_SERVICE_ACCOUNT_NAME=
+				Use for custom Kubernetes cluster target:
+				KUBERNETES_MASTER_ADDRESS=
+				KUBERNETES_MASTER_PORT=
+				KUBERNETES_SERVICE_ACCOUNT_TOKEN=
+				build.properties:
+				GIT_URL=https://github.com/<username>/guestbook.git
+				GIT_BRANCH=master
+				GIT_COMMIT=5246a420041424130f32d292cca7fc7a99aa0b93
+				SOURCE_BUILD_NUMBER=1
+				IMAGE_NAME=guestbook
+				IMAGE_TAG=3-master-5246a420-20190920035314
+				REGISTRY_URL=us.icr.io
+				REGISTRY_NAMESPACE=guestbook-ns
+				GIT_BRANCH=master
+				PIPELINE_KUBERNETES_CLUSTER_NAME=<clustername>
+				CLUSTER_NAMESPACE=guestbook-ns
+				```
 
-                Finished: ERRORED
-                ```
-
-            * TBD for now ignore the warning,
-
-        * Review the `PROD` stage,
-            * In the `JOBS` section, click the `View logs and history` link,
-            * Review the logs,
-
-                ```console
-                CHECKING DEPLOYMENT.YML manifest
-                Kubernetes deployment file 'deployment.yml' not found
-
-                Finished: FAILED
-                ```
-
-            * The script could not find the deployment resource because it is not in the root directory, but it is located in the `./v2` subdirectory.
-            * Go to the `DELIVER` stage, 
-            * In the Delivery Pipeline page, in the `PROD` stage, click the `Configure stage` icon,
+            * In the Delivery Pipeline page, in the `DEPLOY` stage, click the `Configure stage` icon,
             * Go to the `Environment properties` tab,
             * Change the `DEPLOYMENT_FILE` property to `./v2/guestbook-deployment.yaml`,
             * Click `Save`,
-            * Run the `PROD` stage again by clicking the play icon,
+            * Run the `DEPLOY` stage again by clicking the play icon,
             * Your deployment to Kubernetes of the deployment resource should succeed,
         
 5. Check your Kubernetes cluster, in the `prod` namespace, you should see your deployment running,
