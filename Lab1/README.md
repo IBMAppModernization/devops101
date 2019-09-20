@@ -83,44 +83,23 @@
             * Go to https://cloud.ibm.com/kubernetes/clusters, go to `Registry` and `Images`,
             * You should see now that your `guestbook` image added to your registry under the `guestbook-ns` namespace,
         
-        * Review the `VALIDATE` stage,
+        * Review the `DEPLOY` stage,
             * You see that the stage failed for the `Deploy to Kubernetes` job,
             * Review the `View logs and history` link,
             * The `VALIDATE` failed because `Kubernetes deployment file 'deployment.yml' not found`,
-            * Review the environment variables that are written in the log,
-
-				```text
-				IMAGE_NAME=guestbook
-				IMAGE_TAG=3-master-5246a420-20190920035314
-				REGISTRY_URL=us.icr.io
-				REGISTRY_NAMESPACE=guestbook-ns
-				DEPLOYMENT_FILE=deployment.yml
-				USE_ISTIO_GATEWAY=
-				KUBERNETES_SERVICE_ACCOUNT_NAME=
-				Use for custom Kubernetes cluster target:
-				KUBERNETES_MASTER_ADDRESS=
-				KUBERNETES_MASTER_PORT=
-				KUBERNETES_SERVICE_ACCOUNT_TOKEN=
-				build.properties:
-				GIT_URL=https://github.com/<username>/guestbook.git
-				GIT_BRANCH=master
-				GIT_COMMIT=5246a420041424130f32d292cca7fc7a99aa0b93
-				SOURCE_BUILD_NUMBER=1
-				IMAGE_NAME=guestbook
-				IMAGE_TAG=3-master-5246a420-20190920035314
-				REGISTRY_URL=us.icr.io
-				REGISTRY_NAMESPACE=guestbook-ns
-				GIT_BRANCH=master
-				PIPELINE_KUBERNETES_CLUSTER_NAME=<clustername>
-				CLUSTER_NAMESPACE=guestbook-ns
-				```
-
-            * In the Delivery Pipeline page, in the `DEPLOY` stage, click the `Configure stage` icon,
-            * Go to the `Environment properties` tab,
-            * Change the `DEPLOYMENT_FILE` property to `./v2/guestbook-deployment.yaml`,
+            * This problem is caused because the current version of the [Open Toolchain commons](https://github.com/open-toolchain/commons) that uses a `check and deploy` script, does not support deployment files being located in a subdirectory. 
+			* You can fix the failure by making changes to the bash script being run to deploy the application,
+    			* The current fix for the failure is under review as Pull Request 35, https://github.com/open-toolchain/commons/pull/35 in the open-toolchain/commons repository,
+    			* Copy the code in https://raw.githubusercontent.com/open-toolchain/commons/6c3bbd582e04d2bdcf8923692c9e995700966c5a/scripts/check_and_deploy_kubectl.sh
+        		* In the Delivery Pipeline page, in the `DEPLOY` stage, click the `Configure stage` icon,
+        		* In the Jobs tab, scroll down to the `Deploy script`
+        		* Remove the current code and paste the copied code from the PR35 file,
+        		* Scroll up again and go to the `Environment properties` tab,
+        		* Add a new property `DEPLOYMENT_SUBDIRECTORY` with value `v2/`,
+        		* Change value for property `DEPLOYMENT_FILE` to `guestbook-deployment.yaml`,
             * Click `Save`,
             * Run the `DEPLOY` stage again by clicking the play icon,
             * Your deployment to Kubernetes of the deployment resource should succeed,
         
-5. Check your Kubernetes cluster, in the `prod` namespace, you should see your deployment running,
+5. Check your Kubernetes cluster, in the `guestbook-ns` namespace, you should see your deployment running, 
 
