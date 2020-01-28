@@ -16,7 +16,7 @@
         * Source repository URL: `https://github.com/<username>/guestbook`, you should be able to select the drop down and scroll to find your fork of the `guestbook` repo,
         * Check `Enable GitHub Issues`,
         * Check `Track deployment of code changes`,
-    * Click `Create` button,
+    * Click `Delivery Pipeline`,
 
 3. Configure the `Delivery Pipeline`:
     
@@ -83,23 +83,21 @@
             * Go to https://cloud.ibm.com/kubernetes/clusters, go to `Registry` and `Images`,
             * You should see now that your `guestbook` image added to your registry under the `guestbook-ns` namespace,
         
-        * Review the `DEPLOY` stage,
-            * You see that the stage failed for the `Deploy to Kubernetes` job,
-            * Review the `View logs and history` link,
-            * The `VALIDATE` failed because `Kubernetes deployment file 'deployment.yml' not found`,
-            * This problem is caused because the current version of the [Open Toolchain commons](https://github.com/open-toolchain/commons) that uses a `check and deploy` script, does not support deployment files being located in a subdirectory. 
-			* You can fix the failure by making changes to the bash script being run to deploy the application,
-    			* The current fix for the failure is under review as Pull Request 35, https://github.com/open-toolchain/commons/pull/35 in the open-toolchain/commons repository,
-    			* Copy the code in https://raw.githubusercontent.com/open-toolchain/commons/6c3bbd582e04d2bdcf8923692c9e995700966c5a/scripts/check_and_deploy_kubectl.sh
-        		* In the Delivery Pipeline page, in the `DEPLOY` stage, click the `Configure stage` icon,
-        		* In the Jobs tab, scroll down to the `Deploy script`
-        		* Remove the current code and paste the copied code from the PR35 file,
-        		* Scroll up again and go to the `Environment properties` tab,
-        		* Add a new property `DEPLOYMENT_SUBDIRECTORY` with value `v2/`,
-        		* Change value for property `DEPLOYMENT_FILE` to `guestbook-deployment.yaml`,
-            * Click `Save`,
-            * Run the `DEPLOY` stage again by clicking the play icon,
-            * Your deployment to Kubernetes of the deployment resource should succeed,
-        
-5. Check your Kubernetes cluster, in the `guestbook-ns` namespace, you should see your deployment running, 
+5. Check your deployed app.
+    * From the toolchain page, under the "Deploy" stage, click on the "Deploy to Kubernetes" job
+    * Scroll to the bottom of the logs, and you will see "VIEW THE APPLICATION AT:" with a link to access your application
+    * Click on the link to see your guestbook application
+
+6. Make a change
+    
+Your toolchain will pickup changes to your github repository and will redeploy to kubernetes automatically
+
+    * Navigate to your forked github project. `https://www.github.com/<username>/guestbook`
+    * Navigate to v2/guestbook/public/index.html
+    * Click the pencil icon to edit the file
+    * Change the title of the guestbook app from guestbook-v2 to something different
+    * Commit the changes. Navigate back to the toolchain to see your build kicked off automatically
+    * Once the toolkit completes, refresh the app to see your new title
+
+
 

@@ -2,7 +2,7 @@
 
 ## Pre-requisites:
 
-1. An instance of IBM Cloud Kubernetes Service (IKS),
+1. An instance of IBM Cloud Kubernetes Service (IKS). Follow instructions here: https://digidevcon.gitbook.io/kubernetes-coderdojo/exercise-0a
 2. An instance of IBM Cloud Container Registry, 
 3. A fork of the IBM Guestbook application,
 
@@ -15,6 +15,8 @@
     Cloning into 'guestbook'...
     ```
     
+## STOP HERE if you are only doing lab 1
+
 4. Install the [IBM Cloud Developer Tools CLI](https://cloud.ibm.com/docs/cli?topic=cloud-cli-getting-started) on your localhost,
 
     ```console
