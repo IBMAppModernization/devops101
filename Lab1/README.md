@@ -85,8 +85,8 @@
         
 5. Check your deployed app.
     * From the toolchain page, under the "Deploy" stage, click on the "Deploy to Kubernetes" job
-    * Scroll to the bottom of the logs, and you will see "VIEW THE APPLICATION" AT:" with a link to access your application
-    * Click on the link to see your guestbook an application
+    * Scroll to the bottom of the logs, and you will see "VIEW THE APPLICATION AT:" with a link to access your application
+    * Click on the link to see your guestbook application
 
 6. Make a change
     
