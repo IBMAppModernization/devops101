@@ -22,22 +22,22 @@ Cloning into 'guestbook'...
 
 You can use a web terminal with all required tools pre-installed, but you can also  install the [IBM Cloud Developer Tools CLI](https://cloud.ibm.com/docs/cli?topic=cloud-cli-getting-started) on your localhost, 
 
-    ```console
-    $ curl -sL https://ibm.biz/idt-installer | bash
-    ```
+```console
+$ curl -sL https://ibm.biz/idt-installer | bash
+```
 
-    * This command will install the latest stand-alone `IBM Cloud CLI` plus the following tools:
-        * Homebrew (Mac only),
-        * Git,
-        * Docker,
-        * Helm,
-        * kubectl,
-        * curl,
-        * IBM Cloud Developer Tools plug-in  (`ibmcloud dev`)
-        * IBM Cloud Functions plug-in
-        * IBM Cloud Object Storage plug-in
-        * IBM Cloud Container Registry plug-in (`ibmcloud cr`)
-        * IBM Cloud Kubernetes Service plug-in (`ibmcloud ks`)
+* This command will install the latest stand-alone `IBM Cloud CLI` plus the following tools:
+    * Homebrew (Mac only),
+    * Git,
+    * Docker,
+    * Helm,
+    * kubectl,
+    * curl,
+    * IBM Cloud Developer Tools plug-in  (`ibmcloud dev`)
+    * IBM Cloud Functions plug-in
+    * IBM Cloud Object Storage plug-in
+    * IBM Cloud Container Registry plug-in (`ibmcloud cr`)
+    * IBM Cloud Kubernetes Service plug-in (`ibmcloud ks`)
 
 
 ## Access the IBM Cloud and IKS from your Client
