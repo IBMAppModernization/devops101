@@ -7,16 +7,16 @@
 
 ## Optional
 
-To `Enable Issues` and `Track deployment of code changes` in the source provider, you need to have Admin permissions on your repository. You can create a fork of the IBM Guestbook application,
+To `Enable Issues` and `Track deployment of code changes` in the source provider, you need to have Admin permissions on your repository. You can create a fork of the IBM Guestbook application.
 
-    * Go to https://github.com/IBM/guestbook,
-    * Create a fork to your own Github repo,
-    * [Optional] Clone the code to your localhost,
+ * Go to https://github.com/IBM/guestbook,
+ * Create a fork to your own Github repo,
+ * [Optional] Clone the code to your localhost,
 
-    ```console
-    $ git clone https://github.com:<username>/guestbook.git
-    Cloning into 'guestbook'...
-    ```
+```console
+$ git clone https://github.com:<username>/guestbook.git
+Cloning into 'guestbook'...
+```
     
 ## Installing IBM Cloud Developer Tools
 
