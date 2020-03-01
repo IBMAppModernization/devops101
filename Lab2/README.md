@@ -116,3 +116,16 @@
 
 	![PipelineRun Details](../images/pipelinerun-details.png)
 
+
+# Review the Tekton Definitions
+
+* Go to the Guestbook repository and review the `.tekton/hello` folder at https://github.com/remkohdev/guestbook/tree/master/.tekton/hello,
+* You will see 5 Tekton definition files,
+
+	![Tekton Definitions](../images/guestbook-tekton-definitions.png)
+
+* The `TriggerBinding` defines a Git Repository that runs when the Git event type occurs in the Git repo and branch. In our pipeline, we defined a manual trigger, but this `TriggerBinding` is used by Tekton to essentially create a web hook for the Github repository. See also https://github.com/tektoncd/triggers.
+* The `EventListener` defines a mapping from the `triggerBinding` to a `TriggerTemplate`. In our pipeline, the template creates a resource for a `PipelineRun` that references a `Pipeline`,
+* The `Pipeline` is a sequence of `Tasks` comparable to a Jenkins pipeline. In fact, `Jenkins X Pipelines` are based on `Tekton Pipelines`,
+* Our simple `Hello World` pipeline has only 1 `Task`, which creates an `Ubuntu` image and runs the `echo` command with `args` of value `hello world`. 
+* As you saw, the logs of the pipeline displays the output `hello world`.
