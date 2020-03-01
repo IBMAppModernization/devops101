@@ -16,7 +16,7 @@ See: https://cloud.ibm.com/devops/getting-started
 
 1. Lab0, Setup and Pre-requisites, see [Lab0](Lab0/README.md),
 2. Lab1, Create a Toolchain to Deploy a Kubernetes App, see [Lab1](Lab1/README.md),
-3. Lab2, Create a `Hello World` toolchain using a Tekton Pipeline, see (Lab2/README.md),
+3. Lab2, Create a `Hello World` toolchain using a Tekton Pipeline, see [Lab2](Lab2/README.md),
 4. Lab3, Create a Custom Toolchain, see [Lab3](Lab3/README.md),
 
 
