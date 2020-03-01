@@ -125,7 +125,68 @@
 	![Tekton Definitions](../images/guestbook-tekton-definitions.png)
 
 * The `TriggerBinding` defines a Git Repository that runs when the Git event type occurs in the Git repo and branch. In our pipeline, we defined a manual trigger, but this `TriggerBinding` is used by Tekton to essentially create a web hook for the Github repository. See also https://github.com/tektoncd/triggers.
-* The `EventListener` defines a mapping from the `triggerBinding` to a `TriggerTemplate`. In our pipeline, the template creates a resource for a `PipelineRun` that references a `Pipeline`,
-* The `Pipeline` is a sequence of `Tasks` comparable to a Jenkins pipeline. In fact, `Jenkins X Pipelines` are based on `Tekton Pipelines`,
+* The `EventListener` defines a mapping from the `TriggerBinding` to a `TriggerTemplate`. 
+
+```
+apiVersion: tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: hello-listener
+spec:
+  triggers:
+    - binding:
+        name: hello-trigger-binding
+      template:
+        name: hello-trigger-template
+``` 
+
+* In our pipeline, the `TriggerTemplate` creates a resource for a `PipelineRun` that references a `Pipeline`,
+
+```
+apiVersion: tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: hello-trigger-template
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1alpha1
+      kind: PipelineRun
+      metadata:
+        name: pipelinerun-$(uid)
+      spec:
+        pipelineRef:
+          name: hello-pipeline
+```
+
+* The `Pipeline` is a sequence of `Tasks` similar to a Jenkins pipeline. In fact, [Jenkins X Pipelines](https://jenkins-x.io/docs/concepts/jenkins-x-pipelines/) are based on Tekton Pipelines,
+
+```
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: hello-pipeline
+spec:
+  tasks:
+    - name: pipeline-hello-task
+      taskRef:
+        name: hello-task
+```
+
 * Our simple `Hello World` pipeline has only 1 `Task`, which creates an `Ubuntu` image and runs the `echo` command with `args` of value `hello world`. 
+
+```
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: hello-task
+spec:
+  steps:
+    - name: echo
+      image: ubuntu
+      command:
+        - echo
+      args:
+        - "hello world"
+```
+
 * As you saw, the logs of the pipeline displays the output `hello world`.
