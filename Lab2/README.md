@@ -124,7 +124,22 @@
 
 	![Tekton Definitions](../images/guestbook-tekton-definitions.png)
 
-* The `TriggerBinding` defines a Git Repository that runs when the Git event type occurs in the Git repo and branch. In our pipeline, we defined a manual trigger, but this `TriggerBinding` is used by Tekton to essentially create a web hook for the Github repository. See also https://github.com/tektoncd/triggers.
+* The `TriggerBinding` defines a Git Repository that runs when the Git event type occurs in the Git repo and branch. 
+
+```
+apiVersion: tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: hello-trigger-binding
+spec:
+  params:
+    - name: repository
+      value: "https://github.com/remkohdev/guestbook"
+    - name: branch
+      value: "master"
+```  
+
+* In our pipeline, we defined a manual trigger, but this `TriggerBinding` is used by Tekton to essentially create a web hook for the Github repository. See also https://github.com/tektoncd/triggers.
 * The `EventListener` defines a mapping from the `TriggerBinding` to a `TriggerTemplate`. 
 
 ```
